@@ -12,4 +12,4 @@ As you can see, there is an 'AGAIN' button which resets the game, a GUESS button
 
 This requires DOM manipulation not only on the JavaScript of the project, but also on the CSS. We change the background color and the width of the number text. Conversely, the same is done if one loses the game: 
 
-![Win](guessing_lose.png)
+![Win](guessing_lost.png)
