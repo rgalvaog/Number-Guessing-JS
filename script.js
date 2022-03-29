@@ -1,53 +1,78 @@
-// Number Guessing game
+// Number Guessing Game
 // script.js
+// Rafael Guerra
+// March 28, 2022
 
 // Use strict mode
-'use strict';
+"use strict";
 
-// GENERATE SECRET NUMBER
-// Generate random number between 1 and 20
-// We use truncate to remove decimals
-const secretNumber = Math.trunc(Math.random() * 20) + 1;
-document.querySelector('.number').textContent = secretNumber;
-
-// GENERATE SCORE POINTS
-// Let as oppose to const because we will be decreasing the value
+// Global Variables
+let secretNumber = Math.trunc(Math.random() * 20) + 1;
 let score = 20;
+let highscore = 0;
 
-// GAME LOGIC
-document.querySelector('.check').addEventListener('click', function () {
-  const guess = Number(document.querySelector('.guess').value);
-  console.log(guess);
-  // When there is no input
+// Global Functions
+const displayMessage = function (message) {
+  document.querySelector(".message").textContent = message;
+};
+
+const setBodyColor = function (color) {
+  document.querySelector("body").style.backgroundColor = color;
+};
+
+const setTextWidth = function (width) {
+  document.querySelector(".number").style.width = width;
+};
+
+const setNumberText = function (number) {
+  document.querySelector(".number").textContent = number;
+};
+
+const setHighScore = function (highscoreNumber) {
+  document.querySelector(".highscore").textContent = highscoreNumber;
+};
+
+const setScore = function (score_value) {
+  document.querySelector(".score").textContent = score_value;
+};
+
+// Main Game Logic
+document.querySelector(".check").addEventListener("click", function () {
+  const guess = Number(document.querySelector(".guess").value);
   if (!guess) {
-    document.querySelector('.message').textContent = 'No number';
-    // When the guess is correct
+    displayMessage("No number");
   } else if (guess === secretNumber) {
-    document.querySelector('.message').textContent = 'That is correct';
-    document.querySelector('body').style.backgroundColor = '#60b347';
-    document.querySelector('.number').style.width = '30rem';
-
-    // When the score is too high
-  } else if (guess > secretNumber) {
-    if (score > 1) {
-      document.querySelector('.message').textContent = 'Guess is too high!';
-      score--;
-      document.querySelector('.score').textContent = score;
-    } else {
-      document.querySelector('.message').textContent = 'You lost the game :(';
-      document.querySelector('.score').textContent = 0;
-      document.querySelector('body').style.backgroundColor = '#ff4c30';
+    displayMessage("That is correct");
+    setBodyColor("#60b347");
+    setTextWidth("30rem");
+    setNumberText(secretNumber);
+    if (score > highscore) {
+      highscore = score;
+      setHighScore(highscore);
     }
-    // When the score is too low
-  } else if (guess < secretNumber) {
+  } else if (guess !== secretNumber) {
     if (score > 1) {
-      document.querySelector('.message').textContent = 'Guess is too low!';
+      displayMessage(
+        guess > secretNumber ? "Guess is too high!" : "Guess is too low"
+      );
       score--;
-      document.querySelector('.score').textContent = score;
+      setScore(score);
     } else {
-      document.querySelector('.message').textContent = 'You lost the game :(';
-      document.querySelector('.score').textContent = 0;
-      document.querySelector('body').style.backgroundColor = '#ff4c30';
+      displayMessage("You lost the game :(");
+      setScore(0);
+      setBodyColor("#ff4c30");
     }
   }
+});
+
+// Again Button: Restore game conditions
+document.querySelector(".again").addEventListener("click", function () {
+  score = 20;
+  secretNumber = Math.trunc(Math.random() * 20) + 1;
+  displayMessage("Start guessing...");
+  setScore(score);
+  setNumberText("?");
+  setBodyColor("#222");
+  setTextWidth("15rem");
+  document.querySelector(".guess").value = "";
 });
